@@ -1,15 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { TodoModel } from './TodoModel';
-import { CommonModule } from '../common/common.module';
+import { CommonModule, TOKENS } from '../common/common.module';
+import { UpdateDto } from './Dto/updateDto';
 
 @Injectable()
 export class TodoService {
+  @Inject(TOKENS.uuid) uuid: () => string;
   private todos = [];
   getTodos() {
     return this.todos;
   }
-  addTodo() {
-    const todo = new TodoModel('this is a name ', 'this is a description');
+  addTodo(data) {
+    const todo = new TodoModel(this.uuid(), data.name, data.description);
     this.todos.push(todo);
   }
   getTodo(id: string) {
@@ -25,11 +27,12 @@ export class TodoService {
       console.log('deleted');
     } else throw new NotFoundException('Todo not found');
   }
-  updateTodo(name: string, description: string, id: string) {
+  updateTodo(data: UpdateDto, id: string) {
     const todo = this.todos.find((todo) => todo.id === id);
     if (todo) {
-      todo.name = name;
-      todo.description = description;
+      todo.name = data.name;
+      todo.description = data.description;
+      todo.status = data.status;
       console.log('updated');
     } else throw new NotFoundException('Todo not found');
   }
