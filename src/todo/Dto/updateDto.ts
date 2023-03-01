@@ -1,10 +1,29 @@
-import { Optional } from '@nestjs/common';
+import {
+  IsIn,
+  IsNotEmpty,
+  IsOptional,
+  Length,
+  MinLength,
+} from 'class-validator';
+import {
+  errorMessageDescription,
+  errorMessageDescriptionRequired,
+  errorMessageName,
+  errorMessageStatus,
+  TodoStatusEnum,
+} from '../../common/Constants&errorMessages';
 
 export class UpdateDto {
-  @Optional()
+  @IsOptional()
+  @Length(3, 10, { message: errorMessageName })
   name: string;
-  @Optional()
+  @IsNotEmpty({ message: errorMessageDescriptionRequired })
+  @MinLength(10, { message: errorMessageDescription })
+  @IsOptional()
   description: string;
-  @Optional()
+  @IsIn([TodoStatusEnum.waiting, TodoStatusEnum.actif, TodoStatusEnum.done], {
+    message: errorMessageStatus,
+  })
+  @IsOptional()
   status: string;
 }

@@ -1,3 +1,5 @@
+import { TodoStatusEnum } from '../common/Constants&errorMessages';
+
 export class TodoModel {
   id: string;
   name: string;
@@ -11,10 +13,4 @@ export class TodoModel {
     this.description = description;
     this.status = TodoStatusEnum.waiting;
   }
-}
-
-export enum TodoStatusEnum {
-  'waiting' = 'En attente',
-  'actif' = 'En cours',
-  'done' = 'Finalisé',
 }
