@@ -5,11 +5,12 @@ import {
   Get,
   Param,
   Post,
-  Put,
-} from '@nestjs/common';
+  Put, UseGuards
+} from "@nestjs/common";
 import { AddTodoDto } from './Dto/addTodoDto';
 import { TodoService } from './todo.service';
 import { UpdateDto } from './Dto/updateDto';
+import { AuthUserMiddleware } from "../auth-user/auth-user.middleware";
 
 @Controller({ path: 'todo', version: '1' })
 export class TodoController {

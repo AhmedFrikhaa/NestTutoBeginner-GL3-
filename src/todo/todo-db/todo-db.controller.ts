@@ -7,17 +7,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Put, Query
+  Put, Query, UseGuards
 } from "@nestjs/common";
 import { TodoDbService } from './todo-db.service';
 import { AddTodoDto } from '../Dto/addTodoDto';
 import { UpdateDto } from '../Dto/updateDto';
 import { SearchDto } from "../Dto/searchDto";
+import { AuthUserMiddleware } from "../../auth-user/auth-user.middleware";
 
 @Controller({
   path: 'todo',
-  version: '2',
+  version: '2', // <--- This is the version
 })
+
 export class TodoDbController {
   constructor(private todoService: TodoDbService) {}
 

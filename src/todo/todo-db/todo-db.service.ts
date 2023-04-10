@@ -67,9 +67,7 @@ export class TodoDbService {
     if (findByOptions.length){
       return await this.todoRepository.findBy(findByOptions);
     }
-    return await this.todoRepository.find()
-      
-      ;
+    return await this.todoRepository.find();
   }
 
   async todoById(id : number){
