@@ -13,7 +13,7 @@ import { TodoDbService } from './todo-db.service';
 import { AddTodoDto } from '../Dto/addTodoDto';
 import { UpdateDto } from '../Dto/updateDto';
 import { SearchDto } from "../Dto/searchDto";
-import { AuthUserMiddleware } from "../../auth-user/auth-user.middleware";
+
 
 @Controller({
   path: 'todo',
@@ -51,13 +51,17 @@ export class TodoDbController {
   }
 
   @Get('all')
-  getByCritere(@Query() searchCritere : SearchDto ){
+  getByCritere(@Query() searchCritere : SearchDto,  ){
     return this.todoService.getTodos();
   }
 
   @Get(':id')
   getById(@Param('id', ParseIntPipe) id : number){
     return this.todoService.todoById(id);
+  }
+  @Get()
+  getPaginated(@Query('page')page=1, @Query('limit')limit=10){
+    return this.todoService.getAllTodosPaginated(page, limit);
   }
 
 }

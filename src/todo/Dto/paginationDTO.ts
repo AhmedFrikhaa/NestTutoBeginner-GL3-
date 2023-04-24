@@ -1,8 +1,6 @@
 import { IsOptional } from "class-validator";
 
-export class PaginatedDto<TData> {
-  @IsOptional()
-  total: number;
+export class PaginatedDto {
 
   @IsOptional()
   limit: number;
@@ -10,5 +8,4 @@ export class PaginatedDto<TData> {
   @IsOptional()
   offset: number;
 
-  results: TData[];
 }

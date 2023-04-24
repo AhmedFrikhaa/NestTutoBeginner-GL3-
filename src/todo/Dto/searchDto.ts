@@ -1,7 +1,8 @@
 import { IsIn, IsOptional } from "class-validator";
 import { errorMessageStatus, TodoStatusEnum } from "../../common/Constants&errorMessages";
+import { PaginatedDto } from "./paginationDTO";
 
-export class SearchDto{
+export class SearchDto extends PaginatedDto{
   @IsOptional()
   critere : string
 

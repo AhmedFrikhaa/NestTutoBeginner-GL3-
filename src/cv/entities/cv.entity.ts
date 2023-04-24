@@ -32,7 +32,7 @@ export class Cv {
   @Column()
   path: string;
 
-  @ManyToMany(()=>Skill,(skill)=>skill.cvs)
+  @ManyToMany(()=>Skill,(skill)=>skill.cvs,{eager:true})
   @JoinTable()
   skills: Skill[]
 

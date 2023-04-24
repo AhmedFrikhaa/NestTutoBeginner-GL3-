@@ -12,7 +12,9 @@ export class TodoDbService {
   constructor(
     @InjectRepository(TodoEntity)
     private todoRepository: Repository<TodoEntity>,
-  ) {}
+  ) {
+  }
+
   async addTodo(data: AddTodoDto) {
     const newTodo = this.todoRepository.create(data);
     try {
@@ -33,9 +35,11 @@ export class TodoDbService {
   async softDeleteTodo(id: number) {
     return await this.todoRepository.softDelete(id);
   }
+
   async restaurerTodo(id: number) {
     return await this.todoRepository.restore(id);
   }
+
   async countByStatus() {
     const waitingCount = await this.todoRepository.count({
       where: { statut: TodoStatusEnum.waiting },
@@ -52,31 +56,47 @@ export class TodoDbService {
       'Finalise': doneCount,
     };
   }
-  async getTodos(searchCriteria? : SearchDto){
+
+  async getTodos(searchCriteria?: SearchDto) {
     const findByOptions = [];
-    if(searchCriteria){
+    if (searchCriteria) {
       if (searchCriteria.critere) {
         findByOptions.push({ name: Like(`%${searchCriteria.critere}%`) });
 
         findByOptions.push({ description: Like(`%${searchCriteria.critere}%`) });
       }
-      if(searchCriteria.statut){
-        findByOptions.push({statut:searchCriteria.statut});
+      if (searchCriteria.statut) {
+        findByOptions.push({ statut: searchCriteria.statut });
       }
     }
-    if (findByOptions.length){
+    if (findByOptions.length) {
       return await this.todoRepository.findBy(findByOptions);
+
     }
     return await this.todoRepository.find();
   }
 
-  async todoById(id : number){
+  async todoById(id: number) {
 
-    const promise=await this.todoRepository.findBy({id:id})
-    if(!promise){
+    const promise = await this.todoRepository.findBy({ id: id })
+    if (!promise) {
       throw new NotFoundException();
     }
-    return promise ;
+    return promise;
   }
 
+  async getAllTodosPaginated(page = 1, limit = 10) {
+    let todos, total;
+    [todos, total] = await this.todoRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return {
+      page,
+      limit,
+      total,
+      data: todos,
+    };
+
+  }
 }

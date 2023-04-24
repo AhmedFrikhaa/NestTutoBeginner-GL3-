@@ -40,6 +40,6 @@ export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
    consumer
     .apply(AuthUserMiddleware)
-     .forRoutes({ path: "v2/todo/*", method:RequestMethod.ALL })
+     .forRoutes({ path: "v2/todo", method:RequestMethod.ALL })
   }
 }
